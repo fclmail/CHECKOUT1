@@ -117,7 +117,7 @@
         <div id="timer"></div>  
 
         <div class="dropdown-container">  
-            <label for="amount">Select Amount:</label>  
+            <label for="amount">1. SELECT $ PAY AMOUNT:</label>  
             <select id="amount" onchange="calculateGHX()">  
                 <script>  
                     // Generate options from 1 to 100, then 1000 to 10,000, and then from 20,000 to 100,000  
@@ -135,12 +135,12 @@
         </div>  
 
         <div class="ghx-container">  
-            <label for="ghx">GHX (Multiply by 100):</label>  
+            <label for="ghx">GHX MULTIPLIER (GENERATE HUNDRED TIMES ALGORITHM INTANTLY MULTIPLIES 100 TIMES):</label>  
             <input type="text" id="ghx" value="0" readonly>  
         </div>  
 
         <div class="result">  
-            You Get: <span id="result">0</span>  
+            YOU GET INSTANT $: <span id="result">0</span>  
         </div>  
 
         <button id="payButtonMetaMask" class="payment-button" onclick="payWithMetaMask()">Click to Pay with MetaMask</button>  
