@@ -1,0 +1,107 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Checkout Page</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            background-color: black; /* Black background */  
+            color: #00bfff; /* Neon light blue text */  
+            margin: 0;  
+            padding: 20px;  
+            overflow-y: scroll; /* Enable vertical scrollbar */  
+        }  
+        .container {  
+            max-width: 600px;  
+            margin: auto;  
+            padding: 20px;  
+            background: black; /* Black container background */  
+            border: 3px solid #00bfff; /* Neon light blue border */  
+            border-radius: 8px;  
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);  
+        }  
+        h1 {  
+            text-align: center;  
+            text-decoration: underline; /* Underline for emphasis */  
+        }  
+        .input-group {  
+            display: flex;  
+            justify-content: space-between; /* Space out the items */  
+            margin: 10px 0;  
+        }  
+        select, input, button {  
+            padding: 10px;  
+            margin: 0; /* No margin in a flex container */  
+            border: 3px solid #00bfff; /* Thick neon blue outline */  
+            border-radius: 4px;  
+            font-size: 16px;  
+            color: #00bfff; /* Neon light blue text */  
+            background: black; /* Black background for inputs */  
+            flex: 1; /* Make the fields fill space equally */  
+            margin-right: 10px; /* Space between inputs */  
+        }  
+        button {  
+            background-color: #00bfff; /* Neon light blue button */  
+            color: black; /* Black text for button */  
+            cursor: pointer;  
+            transition: background-color 0.3s;  
+        }  
+        button:hover {  
+            background-color: #009acd; /* Darker blue on hover */  
+        }  
+        .result {  
+            font-weight: bold;  
+            text-align: center;  
+            padding: 10px;  
+            margin-top: 20px; /* Space above the result */  
+        }  
+    </style>  
+</head>  
+<body>  
+    <div class="container">  
+        <h1>Checkout Page</h1>  
+        
+        <div class="input-group">  
+            <label for="amount" style="flex-basis: 100%; text-align: left;">Select Amount ($1 - $100,000):</label>  
+            <select id="amount" onchange="calculateGHX()" style="flex: 1;">  
+                <option value="1">1</option>  
+                <!-- Generate options from 1 to 100,000 -->  
+                <script>  
+                    for (let i = 2; i <= 100000; i++) {  
+                        document.write(`<option value="${i}">${i}</option>`);  
+                    }  
+                </script>  
+            </select>  
+        </div>  
+
+        <div class="input-group">  
+            <label for="ghx" style="flex-basis: 100%; text-align: left;">GHX (Multiply by 100):</label>  
+            <input type="text" id="ghx" value="0" readonly style="flex: 2;">  
+        </div>  
+
+        <div class="input-group">  
+            <div class="result" style="flex: 1;">  
+                You Get: <span id="result">0</span>  
+            </div>  
+        </div>  
+
+        <button id="payButton">Click to Pay</button>  
+    </div>  
+
+    <script>  
+        function calculateGHX() {  
+            const amount = parseInt(document.getElementById("amount").value);  
+            const ghx = amount * 100; // Multiply by 100  
+            document.getElementById("ghx").value = ghx;  
+            document.getElementById("result").innerText = ghx;  
+        }  
+
+        document.getElementById("payButton").addEventListener("click", function() {  
+            alert("Payment processing...");  
+            // Here you can add payment processing logic  
+        });  
+    </script>  
+</body>  
+</html>
