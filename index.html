@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>  
 <html lang="en">  
 <head>  
@@ -26,36 +27,76 @@
             text-align: center;  
             text-decoration: underline; /* Underline for emphasis */  
         }  
-        .input-group {  
-            display: flex;  
-            justify-content: space-between; /* Space out the items */  
-            margin: 10px 0;  
+        .dropdown-container {  
+            text-align: center;  
+            margin-bottom: 20px; /* Space below dropdown */  
         }  
-        select, input, button {  
+        select {  
             padding: 10px;  
-            margin: 0; /* No margin in a flex container */  
-            border: 3px solid #00bfff; /* Thick neon blue outline */  
+            margin-left: 10px; /* Space between label and input */  
+            border: 3px solid #00bfff; /* Neon blue border */  
             border-radius: 4px;  
             font-size: 16px;  
             color: #00bfff; /* Neon light blue text */  
-            background: black; /* Black background for inputs */  
-            flex: 1; /* Make the fields fill space equally */  
-            margin-right: 10px; /* Space between inputs */  
-        }  
-        button {  
-            background-color: #00bfff; /* Neon light blue button */  
-            color: black; /* Black text for button */  
-            cursor: pointer;  
-            transition: background-color 0.3s;  
-        }  
-        button:hover {  
-            background-color: #009acd; /* Darker blue on hover */  
+            background: black; /* Black background for select */  
+            width: 180px; /* Set a fixed width for the select dropdown */  
         }  
         .result {  
             font-weight: bold;  
             text-align: center;  
             padding: 10px;  
             margin-top: 20px; /* Space above the result */  
+            border: 3px solid #00bfff; /* Thick neon blue outline */  
+            border-radius: 5px;  
+        }  
+        .ghx-container {  
+            display: flex;  
+            justify-content: center; /* Center align */  
+            margin-top: 10px; /* Space above GHX container */  
+        }  
+        input {  
+            padding: 10px;  
+            margin-left: 10px; /* Space between dropdown and input */  
+            border: 3px solid #00bfff; /* Neon blue border */  
+            border-radius: 4px;  
+            font-size: 16px;  
+            color: #00bfff; /* Neon light blue text */  
+            background: black; /* Black background for inputs */  
+            width: 120px; /* Set a fixed width for the input */  
+        }  
+        .offer {  
+            text-align: center;  
+            font-size: 18px;  
+            margin-bottom: 20px;  
+            font-weight: bold;  
+        }  
+        #timer {  
+            color: green; /* Green color for timer digits */  
+            font-weight: bold; /* Bold font for timer */  
+            text-align: center;  
+            font-size: 24px;  
+            border: 3px solid green; /* Green border around timer */  
+            padding: 10px; /* Padding for timer */  
+            border-radius: 5px; /* Rounded corners */  
+            margin-bottom: 20px; /* Space below timer */  
+        }  
+        .payment-button {  
+            background-color: black; /* Black background for buttons */  
+            color: green; /* Green text for buttons */  
+            border: 3px solid green; /* Green border for buttons */  
+            padding: 10px;  
+            margin: 10px 0; /* Space above and below buttons */  
+            font-size: 18px;  
+            font-weight: bold; /* Bold font for buttons */  
+            cursor: pointer;  
+            transition: background-color 0.3s, transform 0.3s;  
+            border-radius: 4px;  
+            width: 100%; /* Full width buttons */  
+        }  
+        .payment-button:hover {  
+            background-color: green; /* Change background on hover */  
+            color: black; /* Change text to black on hover */  
+            transform: scale(1.05); /* Slightly grow the button */  
         }  
     </style>  
 </head>  
@@ -63,34 +104,44 @@
     <div class="container">  
         <h1>Checkout Page</h1>  
         
-        <div class="input-group">  
-            <label for="amount" style="flex-basis: 100%; text-align: left;">Select Amount ($1 - $100,000):</label>  
-            <select id="amount" onchange="calculateGHX()" style="flex: 1;">  
-                <option value="1">1</option>  
-                <!-- Generate options from 1 to 100,000 -->  
+        <div class="offer">  
+            Limited Time Offer! Ends April 30, 2025  
+        </div>  
+        <div id="timer"></div>  
+
+        <div class="dropdown-container">  
+            <label for="amount">Select Amount:</label>  
+            <select id="amount" onchange="calculateGHX()">  
                 <script>  
-                    for (let i = 2; i <= 100000; i++) {  
+                    // Generate options from 1 to 100, then 1000 to 10,000, and then from 20,000 to 100,000  
+                    for (let i = 1; i <= 100; i++) {  
+                        document.write(`<option value="${i}">${i}</option>`);  
+                    }  
+                    for (let i = 1000; i <= 10000; i += 1000) {  
+                        document.write(`<option value="${i}">${i}</option>`);  
+                    }  
+                    for (let i = 20000; i <= 100000; i += 10000) {  
                         document.write(`<option value="${i}">${i}</option>`);  
                     }  
                 </script>  
             </select>  
         </div>  
 
-        <div class="input-group">  
-            <label for="ghx" style="flex-basis: 100%; text-align: left;">GHX (Multiply by 100):</label>  
-            <input type="text" id="ghx" value="0" readonly style="flex: 2;">  
+        <div class="ghx-container">  
+            <label for="ghx">GHX (Multiply by 100):</label>  
+            <input type="text" id="ghx" value="0" readonly>  
         </div>  
 
-        <div class="input-group">  
-            <div class="result" style="flex: 1;">  
-                You Get: <span id="result">0</span>  
-            </div>  
+        <div class="result">  
+            You Get: <span id="result">0</span>  
         </div>  
 
-        <button id="payButton">Click to Pay</button>  
+        <button id="payButtonMetaMask" class="payment-button" onclick="payWithMetaMask()">Click to Pay with MetaMask</button>  
+        <button id="payButtonPayPal" class="payment-button" onclick="payWithPayPal()">Click to Pay with PayPal/Visa/MC</button>  
     </div>  
 
     <script>  
+        // Function to calculate GHX based on selected amount  
         function calculateGHX() {  
             const amount = parseInt(document.getElementById("amount").value);  
             const ghx = amount * 100; // Multiply by 100  
@@ -98,10 +149,46 @@
             document.getElementById("result").innerText = ghx;  
         }  
 
-        document.getElementById("payButton").addEventListener("click", function() {  
-            alert("Payment processing...");  
-            // Here you can add payment processing logic  
-        });  
+        // Countdown timer functionality  
+        function startTimer() {  
+            const endDate = new Date("April 30, 2025 23:59:59").getTime();  
+            const timerElement = document.getElementById("timer");  
+
+            const interval = setInterval(() => {  
+                const now = new Date().getTime();  
+                const distance = endDate - now;  
+
+                // Time calculations for days, hours, minutes, seconds, and milliseconds  
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));  
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);  
+                const milliseconds = Math.floor(distance % 1000);  
+
+                // Display the result in the timer element  
+                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s ${milliseconds}ms`;  
+
+                // If the countdown is finished, write some text  
+                if (distance < 0) {  
+                    clearInterval(interval);  
+                    timerElement.innerHTML = "Offer has ended!";  
+                }  
+            }, 1); // Update every millisecond  
+        }  
+
+        // Start the timer  
+        startTimer();  
+
+        // Payment functions  
+        function payWithMetaMask() {  
+            alert("Processing payment with MetaMask...");  
+            // Here you can add MetaMask payment processing logic  
+        }  
+
+        function payWithPayPal() {  
+            alert("Processing payment with PayPal/Visa/MC...");  
+            // Here you can add PayPal payment processing logic  
+        }  
     </script>  
 </body>  
 </html>
